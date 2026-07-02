@@ -20,6 +20,7 @@ export interface DocumentPod {
   version: string;
   // 1-100, drives the badge color on the card. Purely cosmetic
   // "importance" score, not a real metric.
+  filePath: string;
   powerLevel: number;
   publishedAt: string;
   classificationTier: ClassificationTier;

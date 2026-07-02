@@ -31,6 +31,7 @@ export async function GET() {
     system: doc.system ?? "n/a",
     useCase: doc.use_case ?? "n/a",
     version: doc.version ?? "n/a",
+    filePath: doc.file_path,
     powerLevel: doc.power_level,
     publishedAt: doc.published_at,
     classificationTier: doc.classification_tier,

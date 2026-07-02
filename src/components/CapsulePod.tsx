@@ -90,9 +90,14 @@ export default function CapsulePod({ pod }: { pod: DocumentPod }) {
 
       <div className="mt-1 flex items-center justify-between border-t border-[color:var(--panel-border)] pt-3 text-[11px] text-[color:var(--text-muted)]">
         <span>{pod.publishedAt}</span>
-        <button className="rounded-lg border border-[color:var(--input-border)] bg-[color:var(--input-bg)] px-3 py-1 font-medium text-[color:var(--text-body)] transition-colors hover:border-[color:var(--input-focus-border)] hover:text-[color:var(--text-heading)]">
+        <a
+          href={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/documents/${pod.filePath}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-lg border border-[color:var(--input-border)] bg-[color:var(--input-bg)] px-3 py-1 font-medium text-[color:var(--text-body)] transition-colors hover:border-[color:var(--input-focus-border)] hover:text-[color:var(--text-heading)]"
+        >
           Open pod
-        </button>
+        </a>
       </div>
     </article>
   );
