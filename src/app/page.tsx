@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import ScouterBar from "@/components/ScouterBar";
 import CapsulePod from "@/components/CapsulePod";
 import UploadDocumentModal from "@/components/UploadDocumentModal";
+import ThemeToggle from "@/components/ThemeToggle";
 import type { DocumentPod } from "@/lib/documentPods";
 
 export default function HomePage() {
@@ -53,22 +54,26 @@ export default function HomePage() {
   }, [pods, goku, vegeta]);
 
   return (
-    <main className="relative min-h-screen overflow-hidden text-[#4a4468]">
-      <div className="relative z-10 mx-auto flex max-w-6xl flex-col gap-10 px-6 py-16">
-        <header className="flex flex-col items-center gap-4 text-center">
-          <span className="scouter-readout text-xs tracking-[0.4em] text-[#8aa9c9]">
+    <main className="relative min-h-screen overflow-hidden text-[color:var(--text-body)]">
+      <div className="relative z-10 mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-16">
+        <div className="flex justify-end">
+          <ThemeToggle />
+        </div>
+
+        <header className="flex flex-col items-center gap-3 text-center sm:gap-4">
+          <span className="scouter-readout text-[10px] tracking-[0.25em] text-[color:var(--text-accent-blue)] sm:text-xs sm:tracking-[0.4em]">
             transmission from sector 0079
           </span>
-          <h1 className="text-4xl tracking-tight text-transparent [background-clip:text] [background-image:linear-gradient(120deg,#a7d8ff,#ffc2e2_50%,#c9b8ff)] sm:text-5xl">
+          <h1 className="text-3xl tracking-tight text-transparent [background-clip:text] [background-image:linear-gradient(120deg,#a7d8ff,#ffc2e2_50%,#c9b8ff)] sm:text-5xl">
             Capsule Archive
           </h1>
-          <p className="max-w-xl text-sm text-[#6b6690]/80 sm:text-base">
+          <p className="max-w-xl text-sm text-[color:var(--text-body)] sm:text-base">
             The org&apos;s document maker and archive. Read, host, edit, and
             generate documents for every model and system you ship.
           </p>
           <button
             onClick={() => setIsUploadOpen(true)}
-            className="glow-button mt-2 rounded-full border border-white/70 bg-white/50 px-6 py-2.5 text-sm font-medium text-[#5a5480]"
+            className="glow-button mt-2 w-full max-w-xs rounded-full border border-[color:var(--panel-border)] bg-[color:var(--input-bg)] px-6 py-2.5 text-sm font-medium text-[color:var(--text-button)] sm:w-auto"
           >
             + Materialize new document
           </button>
@@ -83,14 +88,14 @@ export default function HomePage() {
           resultCount={gohan.length}
         />
 
-        <section className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
           {gohan.map((pod) => (
             <CapsulePod key={pod.id} pod={pod} />
           ))}
         </section>
 
         {!isLoading && gohan.length === 0 && (
-          <p className="py-16 text-center text-sm text-[#8a85ab]">
+          <p className="py-16 text-center text-sm text-[color:var(--text-muted)]">
             No pods detected. Adjust the scouter and try again.
           </p>
         )}

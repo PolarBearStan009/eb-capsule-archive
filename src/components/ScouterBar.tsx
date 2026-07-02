@@ -21,9 +21,9 @@ export default function ScouterBar({
   resultCount,
 }: ScouterBarProps) {
   return (
-    <div className="glass-panel flex flex-col gap-4 rounded-2xl p-5 sm:flex-row sm:items-center">
+    <div className="glass-panel flex flex-col gap-4 rounded-2xl p-4 sm:flex-row sm:items-center sm:p-5">
       <div className="flex flex-1 items-center gap-3">
-        <span className="scouter-readout text-xs tracking-[0.3em] text-[#8fb8dd]">
+        <span className="scouter-readout text-xs tracking-[0.3em] text-[color:var(--text-accent-blue)]">
           pwr
         </span>
         <input
@@ -31,15 +31,15 @@ export default function ScouterBar({
           value={searchQuery}
           onChange={(event) => onSearchQueryChange(event.target.value)}
           placeholder="Search the archive..."
-          className="w-full rounded-xl border border-white/70 bg-white/50 px-4 py-2.5 text-sm text-[#4a4468] placeholder:text-[#8a85ab]/70 outline-none focus:border-[#c9b8ff]"
+          className="w-full rounded-xl border border-[color:var(--input-border)] bg-[color:var(--input-bg)] px-4 py-2.5 text-base text-[color:var(--text-heading)] outline-none placeholder:text-[color:var(--text-muted)] focus:border-[color:var(--input-focus-border)] sm:text-sm"
         />
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <select
           value={selectedGenre}
           onChange={(event) => onSelectedGenreChange(event.target.value)}
-          className="rounded-xl border border-white/70 bg-white/50 px-3 py-2.5 text-sm text-[#4a4468] outline-none focus:border-[#c9b8ff]"
+          className="flex-1 rounded-xl border border-[color:var(--input-border)] bg-[color:var(--input-bg)] px-3 py-2.5 text-base text-[color:var(--text-heading)] outline-none focus:border-[color:var(--input-focus-border)] sm:flex-none sm:text-sm"
         >
           <option value="all">All genres</option>
           {genreOptions.map((genre) => (
@@ -49,7 +49,7 @@ export default function ScouterBar({
           ))}
         </select>
 
-        <span className="whitespace-nowrap rounded-xl border border-white/70 bg-white/60 px-3 py-2.5 text-xs font-medium text-[#7a74a8]">
+        <span className="whitespace-nowrap rounded-xl border border-[color:var(--input-border)] bg-[color:var(--input-bg)] px-3 py-2.5 text-xs font-medium text-[color:var(--text-body)]">
           {resultCount} detected
         </span>
       </div>

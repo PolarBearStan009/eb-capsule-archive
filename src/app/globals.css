@@ -1,28 +1,85 @@
 @import url("https://fonts.googleapis.com/css2?family=Baumans&family=Quicksand:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #eaf6fb;
-  --foreground: #3a3550;
+  --page-grad-a: rgba(255, 214, 236, 0.55);
+  --page-grad-b: rgba(190, 231, 255, 0.6);
+  --page-grad-1: #eaf6fb;
+  --page-grad-2: #dcecf7;
+  --page-grad-3: #e9f2ef;
+
+  --text-heading: #453f66;
+  --text-body: #6b6690;
+  --text-muted: #8a85ab;
+  --text-faint: #a6a1c4;
+  --text-faintest: #b8b3d6;
+  --text-accent-blue: #8aa9c9;
+  --text-pwr: #9aa8c9;
+  --text-button: #5a5480;
+
+  --panel-bg-1: rgba(255, 255, 255, 0.75);
+  --panel-bg-2: rgba(214, 236, 255, 0.35);
+  --panel-border: rgba(255, 255, 255, 0.6);
+  --panel-shadow: rgba(120, 150, 190, 0.18);
+  --panel-inset: rgba(255, 255, 255, 0.8);
+
+  --card-bg-1: rgba(255, 255, 255, 0.85);
+  --card-bg-2: rgba(226, 240, 253, 0.55);
+  --card-gloss: rgba(255, 255, 255, 0.55);
+
+  --input-bg: rgba(255, 255, 255, 0.5);
+  --input-border: rgba(255, 255, 255, 0.7);
+  --input-focus-border: #c9b8ff;
+
+  --overlay-bg: rgba(58, 53, 80, 0.3);
+}
+
+.dark {
+  --page-grad-a: rgba(255, 140, 210, 0.14);
+  --page-grad-b: rgba(120, 170, 255, 0.16);
+  --page-grad-1: #15121f;
+  --page-grad-2: #191831;
+  --page-grad-3: #12202a;
+
+  --text-heading: #f1ecff;
+  --text-body: #c9c2e8;
+  --text-muted: #a79fcf;
+  --text-faint: #8b83b3;
+  --text-faintest: #756c9e;
+  --text-accent-blue: #a9c7ea;
+  --text-pwr: #b7c3e8;
+  --text-button: #e8e2ff;
+
+  --panel-bg-1: rgba(40, 34, 64, 0.55);
+  --panel-bg-2: rgba(45, 55, 90, 0.35);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --panel-shadow: rgba(0, 0, 0, 0.35);
+  --panel-inset: rgba(255, 255, 255, 0.06);
+
+  --card-bg-1: rgba(42, 36, 66, 0.7);
+  --card-bg-2: rgba(38, 48, 78, 0.5);
+  --card-gloss: rgba(255, 255, 255, 0.05);
+
+  --input-bg: rgba(255, 255, 255, 0.06);
+  --input-border: rgba(255, 255, 255, 0.12);
+  --input-focus-border: #b79fff;
+
+  --overlay-bg: rgba(5, 4, 12, 0.55);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: "Quicksand", var(--font-geist-sans), sans-serif;
   --font-display: "Baumans", var(--font-geist-sans), sans-serif;
 }
 
 body {
-  background: radial-gradient(
-      circle at 15% 10%,
-      rgba(255, 214, 236, 0.55),
-      transparent 45%
-    ),
-    radial-gradient(circle at 85% 0%, rgba(190, 231, 255, 0.6), transparent 50%),
-    linear-gradient(180deg, #eaf6fb 0%, #dcecf7 55%, #e9f2ef 100%);
-  color: var(--foreground);
+  background: radial-gradient(circle at 15% 10%, var(--page-grad-a), transparent 45%),
+    radial-gradient(circle at 85% 0%, var(--page-grad-b), transparent 50%),
+    linear-gradient(180deg, var(--page-grad-1) 0%, var(--page-grad-2) 55%, var(--page-grad-3) 100%);
+  color: var(--text-body);
   font-family: var(--font-sans);
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
 h1,
@@ -37,26 +94,19 @@ h3,
 /* Soft frosted glass, the Frutiger Aero bevel: a light gloss streak across
    the top of an otherwise plain translucent panel. Cool pastel, no glow. */
 .glass-panel {
-  background: linear-gradient(
-    165deg,
-    rgba(255, 255, 255, 0.75),
-    rgba(214, 236, 255, 0.35)
-  );
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: linear-gradient(165deg, var(--panel-bg-1), var(--panel-bg-2));
+  border: 1px solid var(--panel-border);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 8px 30px rgba(120, 150, 190, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 30px var(--panel-shadow), inset 0 1px 0 var(--panel-inset);
+  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .capsule-pod {
   position: relative;
-  background: linear-gradient(
-    165deg,
-    rgba(255, 255, 255, 0.85),
-    rgba(226, 240, 253, 0.55)
-  );
+  background: linear-gradient(165deg, var(--card-bg-1), var(--card-bg-2));
   overflow: hidden;
+  transition: background 0.4s ease;
 }
 
 /* The classic aero gloss highlight: a soft light streak across the top
@@ -66,22 +116,16 @@ h3,
   position: absolute;
   inset: 0 0 auto 0;
   height: 45%;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.55),
-    rgba(255, 255, 255, 0)
-  );
+  background: linear-gradient(180deg, var(--card-gloss), transparent);
   pointer-events: none;
 }
 
 .glow-button {
-  box-shadow: 0 6px 18px rgba(150, 175, 210, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 18px var(--panel-shadow), inset 0 1px 0 var(--panel-inset);
   transition: box-shadow 0.25s ease, transform 0.25s ease;
 }
 
 .glow-button:hover {
-  box-shadow: 0 10px 24px rgba(150, 175, 210, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 24px var(--panel-shadow), inset 0 1px 0 var(--panel-inset);
   transform: translateY(-1px);
 }

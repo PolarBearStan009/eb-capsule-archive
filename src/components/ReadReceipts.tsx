@@ -23,15 +23,15 @@ export default function ReadReceipts({
   const confirmedCount = readers.filter((reader) => reader.hasRead).length;
 
   return (
-    <details className="group rounded-xl border border-white/60 bg-white/40 open:bg-white/60">
-      <summary className="flex cursor-pointer list-none items-center justify-between px-3 py-2 text-xs font-medium text-[#6b6690]">
+    <details className="group rounded-xl border border-[color:var(--panel-border)] bg-[color:var(--input-bg)] open:bg-[color:var(--input-bg)]">
+      <summary className="flex cursor-pointer list-none items-center justify-between px-3 py-2 text-xs font-medium text-[color:var(--text-body)]">
         <span>Read receipts</span>
         <span className="flex items-center gap-2">
-          <span className="rounded-full bg-white/70 px-2 py-0.5 text-[10px] text-[#8a85ab]">
+          <span className="rounded-full bg-[color:var(--panel-bg-1)] px-2 py-0.5 text-[10px] text-[color:var(--text-muted)]">
             {confirmedCount}/{readers.length} confirmed
           </span>
           <svg
-            className="h-3 w-3 text-[#8a85ab] transition-transform duration-200 group-open:rotate-180"
+            className="h-3 w-3 text-[color:var(--text-muted)] transition-transform duration-200 group-open:rotate-180"
             viewBox="0 0 20 20"
             fill="none"
             stroke="currentColor"
@@ -51,9 +51,9 @@ export default function ReadReceipts({
           pendingReader === reader.name ? (
             <li
               key={reader.name}
-              className="flex flex-col gap-2 rounded-lg bg-white/70 p-2.5"
+              className="flex flex-col gap-2 rounded-lg bg-[color:var(--panel-bg-1)] p-2.5"
             >
-              <p className="text-[11px] leading-snug text-[#6b6690]">
+              <p className="text-[11px] leading-snug text-[color:var(--text-body)]">
                 {question}
               </p>
               <div className="flex gap-2">
@@ -68,7 +68,7 @@ export default function ReadReceipts({
                 </button>
                 <button
                   onClick={() => setPendingReader(null)}
-                  className="rounded-full bg-white px-3 py-1 text-[11px] font-medium text-[#8a85ab]"
+                  className="rounded-full bg-[color:var(--input-bg)] px-3 py-1 text-[11px] font-medium text-[color:var(--text-muted)]"
                 >
                   Not yet
                 </button>
@@ -78,13 +78,15 @@ export default function ReadReceipts({
             <li key={reader.name}>
               <button
                 onClick={() => !reader.hasRead && setPendingReader(reader.name)}
-                className="flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-white/50"
+                className="flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-[color:var(--panel-bg-1)]"
               >
                 <span className="flex items-center gap-2">
                   <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#ece3ff] text-[10px] font-medium text-[#7864b0]">
                     {reader.name.slice(0, 1)}
                   </span>
-                  <span className="text-xs text-[#4a4468]">{reader.name}</span>
+                  <span className="text-xs text-[color:var(--text-heading)]">
+                    {reader.name}
+                  </span>
                 </span>
                 {reader.hasRead ? (
                   <span className="flex items-center gap-1 text-[11px] font-medium text-[#4a9a76]">
@@ -104,7 +106,7 @@ export default function ReadReceipts({
                     {reader.respondedAt}
                   </span>
                 ) : (
-                  <span className="text-[11px] text-[#b8b3d6]">
+                  <span className="text-[11px] text-[color:var(--text-faintest)]">
                     Tap to confirm
                   </span>
                 )}

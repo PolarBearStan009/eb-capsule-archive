@@ -52,9 +52,9 @@ export default function CapsulePod({ pod }: { pod: DocumentPod }) {
   }
 
   return (
-    <article className="capsule-pod glass-panel group relative flex flex-col gap-3 rounded-2xl p-5 transition-transform duration-300 hover:-translate-y-1">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+    <article className="capsule-pod glass-panel group relative flex flex-col gap-3 rounded-2xl p-4 transition-transform duration-300 hover:-translate-y-1 sm:p-5">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span
             className={`rounded-full border px-2.5 py-0.5 text-[11px] font-medium tracking-wide ${badge.bg} ${badge.text} ${badge.border}`}
           >
@@ -62,23 +62,23 @@ export default function CapsulePod({ pod }: { pod: DocumentPod }) {
           </span>
           <ClassificationBadge tier={pod.classificationTier} />
         </div>
-        <span className="scouter-readout text-[11px] text-[#9aa8c9]">
+        <span className="scouter-readout text-[11px] text-[color:var(--text-pwr)]">
           pwr {pod.powerLevel}
         </span>
       </div>
 
-      <h3 className="text-base font-medium leading-snug text-[#453f66]">
+      <h3 className="text-base font-medium leading-snug text-[color:var(--text-heading)]">
         {pod.title}
       </h3>
 
-      <dl className="grid grid-cols-2 gap-x-3 gap-y-1 text-xs text-[#6b6690]">
-        <dt className="text-[#a6a1c4]">Model</dt>
+      <dl className="grid grid-cols-2 gap-x-3 gap-y-1 text-xs text-[color:var(--text-body)]">
+        <dt className="text-[color:var(--text-faint)]">Model</dt>
         <dd>{pod.model}</dd>
-        <dt className="text-[#a6a1c4]">System</dt>
+        <dt className="text-[color:var(--text-faint)]">System</dt>
         <dd>{pod.system}</dd>
-        <dt className="text-[#a6a1c4]">Use case</dt>
+        <dt className="text-[color:var(--text-faint)]">Use case</dt>
         <dd className="col-span-1">{pod.useCase}</dd>
-        <dt className="text-[#a6a1c4]">Version</dt>
+        <dt className="text-[color:var(--text-faint)]">Version</dt>
         <dd>{pod.version}</dd>
       </dl>
 
@@ -88,9 +88,9 @@ export default function CapsulePod({ pod }: { pod: DocumentPod }) {
         onReaderConfirm={handleReaderConfirm}
       />
 
-      <div className="mt-1 flex items-center justify-between border-t border-white/60 pt-3 text-[11px] text-[#8a85ab]">
+      <div className="mt-1 flex items-center justify-between border-t border-[color:var(--panel-border)] pt-3 text-[11px] text-[color:var(--text-muted)]">
         <span>{pod.publishedAt}</span>
-        <button className="rounded-lg border border-white/70 bg-white/50 px-3 py-1 font-medium text-[#6b6690] transition-colors hover:border-[#c9b8ff] hover:bg-white/80 hover:text-[#453f66]">
+        <button className="rounded-lg border border-[color:var(--input-border)] bg-[color:var(--input-bg)] px-3 py-1 font-medium text-[color:var(--text-body)] transition-colors hover:border-[color:var(--input-focus-border)] hover:text-[color:var(--text-heading)]">
           Open pod
         </button>
       </div>
