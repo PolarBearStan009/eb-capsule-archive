@@ -90,7 +90,12 @@ export default function HomePage() {
 
         <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
           {gohan.map((pod) => (
-            <CapsulePod key={pod.id} pod={pod} />
+            <CapsulePod
+              key={pod.id}
+              pod={pod}
+              onDelete={(id) => setPods((prev) => prev.filter((p) => p.id !== id))}
+              onUpdated={loadPods}
+            />
           ))}
         </section>
 
