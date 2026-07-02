@@ -1,65 +1,110 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useCallback, useEffect, useMemo, useState } from "react";
+import ScouterBar from "@/components/ScouterBar";
+import CapsulePod from "@/components/CapsulePod";
+import UploadDocumentModal from "@/components/UploadDocumentModal";
+import type { DocumentPod } from "@/lib/documentPods";
+
+export default function HomePage() {
+  // goku: the search text -- he's the one out front doing the searching.
+  const [goku, setGoku] = useState("");
+  // vegeta: the genre filter -- picky about what counts as worthy.
+  const [vegeta, setVegeta] = useState("all");
+
+  const [pods, setPods] = useState<DocumentPod[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+
+  // isLoading starts true already, so this only needs to flip it off
+  // once data lands -- no synchronous setState before the fetch.
+  const loadPods = useCallback(async () => {
+    const response = await fetch("/api/documents");
+    const data = await response.json();
+    setPods(Array.isArray(data) ? data : []);
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    // Simple client-side fetch-on-mount. This is a client component
+    // (search/filter/upload state live here), so there's no server
+    // component to fetch in instead.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadPods();
+  }, [loadPods]);
+
+  const genreOptions = useMemo(
+    () => Array.from(new Set(pods.map((pod) => pod.genre))),
+    [pods]
+  );
+
+  // gohan: the filtered results -- inherits the work of goku and vegeta
+  // above and quietly does the actual filtering.
+  const gohan = useMemo(() => {
+    return pods.filter((pod) => {
+      const matchesGenre = vegeta === "all" || pod.genre === vegeta;
+      const matchesQuery =
+        goku.trim().length === 0 ||
+        pod.title.toLowerCase().includes(goku.toLowerCase()) ||
+        pod.model.toLowerCase().includes(goku.toLowerCase()) ||
+        pod.system.toLowerCase().includes(goku.toLowerCase());
+      return matchesGenre && matchesQuery;
+    });
+  }, [pods, goku, vegeta]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="relative min-h-screen overflow-hidden text-[#4a4468]">
+      <div className="relative z-10 mx-auto flex max-w-6xl flex-col gap-10 px-6 py-16">
+        <header className="flex flex-col items-center gap-4 text-center">
+          <span className="scouter-readout text-xs tracking-[0.4em] text-[#8aa9c9]">
+            transmission from sector 0079
+          </span>
+          <h1 className="text-4xl tracking-tight text-transparent [background-clip:text] [background-image:linear-gradient(120deg,#a7d8ff,#ffc2e2_50%,#c9b8ff)] sm:text-5xl">
+            Capsule Archive
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="max-w-xl text-sm text-[#6b6690]/80 sm:text-base">
+            The org&apos;s document maker and archive. Read, host, edit, and
+            generate documents for every model and system you ship.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => setIsUploadOpen(true)}
+            className="glow-button mt-2 rounded-full border border-white/70 bg-white/50 px-6 py-2.5 text-sm font-medium text-[#5a5480]"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            + Materialize new document
+          </button>
+        </header>
+
+        <ScouterBar
+          searchQuery={goku}
+          onSearchQueryChange={setGoku}
+          selectedGenre={vegeta}
+          onSelectedGenreChange={setVegeta}
+          genreOptions={genreOptions}
+          resultCount={gohan.length}
+        />
+
+        <section className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {gohan.map((pod) => (
+            <CapsulePod key={pod.id} pod={pod} />
+          ))}
+        </section>
+
+        {!isLoading && gohan.length === 0 && (
+          <p className="py-16 text-center text-sm text-[#8a85ab]">
+            No pods detected. Adjust the scouter and try again.
+          </p>
+        )}
+      </div>
+
+      {isUploadOpen && (
+        <UploadDocumentModal
+          onClose={() => setIsUploadOpen(false)}
+          onUploaded={() => {
+            setIsUploadOpen(false);
+            loadPods();
+          }}
+        />
+      )}
+    </main>
   );
 }

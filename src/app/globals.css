@@ -1,26 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Baumans&family=Quicksand:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #eaf6fb;
+  --foreground: #3a3550;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: "Quicksand", var(--font-geist-sans), sans-serif;
+  --font-display: "Baumans", var(--font-geist-sans), sans-serif;
 }
 
 body {
-  background: var(--background);
+  background: radial-gradient(
+      circle at 15% 10%,
+      rgba(255, 214, 236, 0.55),
+      transparent 45%
+    ),
+    radial-gradient(circle at 85% 0%, rgba(190, 231, 255, 0.6), transparent 50%),
+    linear-gradient(180deg, #eaf6fb 0%, #dcecf7 55%, #e9f2ef 100%);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+.scouter-readout {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Soft frosted glass, the Frutiger Aero bevel: a light gloss streak across
+   the top of an otherwise plain translucent panel. Cool pastel, no glow. */
+.glass-panel {
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.75),
+    rgba(214, 236, 255, 0.35)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 30px rgba(120, 150, 190, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.capsule-pod {
+  position: relative;
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.85),
+    rgba(226, 240, 253, 0.55)
+  );
+  overflow: hidden;
+}
+
+/* The classic aero gloss highlight: a soft light streak across the top
+   third of the card. */
+.capsule-pod::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 45%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.55),
+    rgba(255, 255, 255, 0)
+  );
+  pointer-events: none;
+}
+
+.glow-button {
+  box-shadow: 0 6px 18px rgba(150, 175, 210, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.glow-button:hover {
+  box-shadow: 0 10px 24px rgba(150, 175, 210, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
 }
