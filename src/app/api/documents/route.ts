@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabase } from "@/lib/supabaseClient";
 import { orgMembers } from "@/lib/orgMembers";
 import type { DocumentPod } from "@/lib/documentPods";
 
 // Lists every document with its read-receipt checklist attached.
 export async function GET() {
+  const supabase = getSupabase();
   const { data: documents, error: documentsError } = await supabase
     .from("documents")
     .select("*")
@@ -49,6 +50,7 @@ export async function GET() {
 // Uploads a new PDF and creates its metadata row + a fresh, all-unread
 // checklist for every org member.
 export async function POST(request: Request) {
+  const supabase = getSupabase();
   const formData = await request.formData();
   const file = formData.get("file") as File | null;
   const title = formData.get("title") as string | null;

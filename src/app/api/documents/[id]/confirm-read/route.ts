@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabase } from "@/lib/supabaseClient";
 
 // Marks one reader as having read + acknowledged one document.
 export async function POST(
@@ -16,6 +16,7 @@ export async function POST(
     );
   }
 
+  const supabase = getSupabase();
   const { error } = await supabase
     .from("read_receipts")
     .update({
