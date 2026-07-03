@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { getSupabase } from "@/lib/supabaseClient";
+import { getAdminSupabase } from "@/lib/supabaseClient";
 
 export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const supabase = getSupabase();
+  const supabase = getAdminSupabase();
 
   const { data: doc } = await supabase
     .from("documents")
@@ -29,7 +29,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const supabase = getSupabase();
+  const supabase = getAdminSupabase();
   const formData = await request.formData();
 
   const powerLevel = formData.get("powerLevel");
