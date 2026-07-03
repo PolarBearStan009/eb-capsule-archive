@@ -63,8 +63,8 @@ export default function CapsulePod({ pod, onDelete, onUpdated }: Props) {
   }
 
   async function handleDelete() {
-    await fetch(`/api/documents/${pod.id}`, { method: "DELETE" });
-    onDelete(pod.id);
+    const res = await fetch(`/api/documents/${pod.id}`, { method: "DELETE" });
+    if (res.ok) onDelete(pod.id);
   }
 
   const pdfUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/documents/${pod.filePath}`;
