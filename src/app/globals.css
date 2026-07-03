@@ -144,3 +144,37 @@ h3,
 .vinyl-spin {
   animation: vinyl-spin 3s linear infinite;
 }
+
+@keyframes overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(28px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+
+@keyframes scan-line {
+  from { top: -30%; }
+  to   { top: 120%; }
+}
+
+@keyframes border-glow {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(180,150,255,0.25), 0 0 24px rgba(180,150,255,0.08); }
+  50%       { box-shadow: 0 0 0 1px rgba(180,150,255,0.55), 0 0 40px rgba(180,150,255,0.18); }
+}
+
+.modal-overlay {
+  animation: overlay-in 0.25s ease both;
+}
+
+.modal-panel {
+  animation: modal-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both,
+             border-glow 3s ease-in-out 0.35s infinite;
+}
