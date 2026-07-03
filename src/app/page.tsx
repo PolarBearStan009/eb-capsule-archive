@@ -76,6 +76,13 @@ export default function OrgHomePage() {
         <LanternToggle />
       </div>
 
+      {/* Liminal coordinate marker */}
+      <div className="fixed bottom-36 left-6 z-10 pointer-events-none select-none" aria-hidden="true">
+        <p style={{ fontFamily: "monospace", fontSize: 8, letterSpacing: "0.18em", color: "rgba(160,150,210,0.22)", lineHeight: 1.8 }}>
+          [ 00.0000° N ]<br />[ 00.0000° E ]<br />YOU ARE ALREADY INSIDE
+        </p>
+      </div>
+
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 gap-14 py-24">
 

@@ -221,6 +221,143 @@ h3,
              border-glow 3s ease-in-out 0.35s infinite;
 }
 
+/* ── Liminal weirdcore overlays ── */
+
+/* Faint grid on the nebula page — like abandoned building tiles */
+.nebula-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(180, 160, 255, 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180, 160, 255, 0.032) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.dark .nebula-bg::before {
+  background-image:
+    linear-gradient(rgba(140, 120, 220, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(140, 120, 220, 0.045) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+/* Soft vignette pulling edges into darkness */
+.nebula-bg::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 42%, transparent 52%, rgba(8, 4, 18, 0.38) 100%);
+}
+
+.dark .nebula-bg::after {
+  background: radial-gradient(ellipse at 50% 42%, transparent 45%, rgba(4, 2, 12, 0.55) 100%);
+}
+
+/* ── Themed media player ── */
+
+.player-footer {
+  background: linear-gradient(to top,
+    rgba(12, 8, 28, 0.88) 0%,
+    rgba(18, 12, 38, 0.72) 55%,
+    transparent 100%);
+  backdrop-filter: blur(2px);
+}
+
+.dark .player-footer {
+  background: linear-gradient(to top,
+    rgba(6, 3, 16, 0.94) 0%,
+    rgba(10, 6, 24, 0.78) 55%,
+    transparent 100%);
+}
+
+.player-track-name {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(180, 200, 255, 0.75);
+  text-shadow: 0 0 12px rgba(160, 180, 255, 0.5);
+}
+
+.dark .player-track-name {
+  color: rgba(160, 180, 255, 0.65);
+  text-shadow: 0 0 16px rgba(140, 160, 255, 0.5);
+}
+
+.player-artist {
+  font-family: var(--font-display);
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(140, 130, 180, 0.5);
+}
+
+.player-play {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 30px;
+  min-width: 130px;
+  justify-content: center;
+  background: rgba(160, 140, 220, 0.1);
+  border: 1px solid rgba(180, 160, 255, 0.28);
+  border-radius: 50px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  color: rgba(200, 185, 255, 0.8);
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset, 0 4px 16px rgba(0,0,0,0.25);
+}
+
+.player-play:hover {
+  background: rgba(160, 140, 220, 0.2);
+  border-color: rgba(180, 160, 255, 0.5);
+  box-shadow: 0 0 20px rgba(160, 140, 255, 0.25), 0 4px 16px rgba(0,0,0,0.25);
+  color: rgba(220, 210, 255, 0.95);
+}
+
+.player-play.is-playing {
+  background: rgba(160, 140, 220, 0.18);
+  border-color: rgba(180, 160, 255, 0.55);
+  color: rgba(220, 210, 255, 1);
+  animation: player-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes player-pulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(160, 140, 255, 0.3), 0 4px 16px rgba(0,0,0,0.25); }
+  50%       { box-shadow: 0 0 28px rgba(160, 140, 255, 0.55), 0 4px 16px rgba(0,0,0,0.25); }
+}
+
+.player-skip {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(180, 160, 255, 0.18);
+  border-radius: 50%;
+  backdrop-filter: blur(12px);
+  color: rgba(160, 150, 200, 0.6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.player-skip:hover {
+  background: rgba(160, 140, 220, 0.14);
+  border-color: rgba(180, 160, 255, 0.38);
+  color: rgba(200, 190, 255, 0.9);
+  box-shadow: 0 0 12px rgba(160, 140, 255, 0.2);
+}
+
 /* ── UIverse Jazz Footer Button (dexter-st/red-crab-98, adapted) ── */
 
 .jazz-btn {
