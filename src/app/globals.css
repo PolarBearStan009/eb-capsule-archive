@@ -499,8 +499,13 @@ h3,
 
 /* ── Org title ── */
 .org-eyebrow {
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.75);
   letter-spacing: 0.45em;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+}
+
+.dark .org-eyebrow {
+  color: rgba(200, 180, 255, 0.7);
 }
 
 .org-title {
@@ -509,28 +514,33 @@ h3,
   font-weight: 400;
   letter-spacing: 0.05em;
   line-height: 1;
-  background: linear-gradient(130deg, #a7d8ff 0%, #ffc2e2 45%, #c9b8ff 80%, #ffe0a0 100%);
+  background: linear-gradient(130deg, #ffffff 0%, #ffd6f0 35%, #e8d0ff 65%, #ffe8b0 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 0 40px rgba(200, 150, 255, 0.3));
+  filter: drop-shadow(0 2px 16px rgba(0,0,0,0.35)) drop-shadow(0 0 40px rgba(200, 150, 255, 0.4));
   transition: filter 0.4s ease;
 }
 
 .dark .org-title {
-  background: linear-gradient(130deg, #7ab8ff 0%, #ff9ee0 45%, #a890ff 80%, #ffd070 100%);
+  background: linear-gradient(130deg, #c8e8ff 0%, #ff9ee0 45%, #c0a8ff 80%, #ffd070 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 0 60px rgba(150, 100, 255, 0.5));
+  filter: drop-shadow(0 2px 16px rgba(0,0,0,0.6)) drop-shadow(0 0 60px rgba(150, 100, 255, 0.5));
 }
 
 .org-members {
   font-family: var(--font-display);
   font-size: 0.7rem;
   letter-spacing: 0.3em;
-  color: var(--text-faint);
+  color: rgba(255, 255, 255, 0.8);
   text-transform: uppercase;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5), 0 0 20px rgba(180,150,255,0.3);
+}
+
+.dark .org-members {
+  color: rgba(200, 180, 255, 0.65);
 }
 
 /* ── Project dropdown ── */
@@ -692,12 +702,12 @@ h3,
 .auth-panel {
   width: 100%;
   max-width: 320px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(240, 230, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 16px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 8px 40px rgba(180, 150, 255, 0.15), inset 0 1px 0 rgba(255,255,255,0.4);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.15), inset 0 1px 0 rgba(255,255,255,0.5);
   padding: 28px 24px;
   display: flex;
   flex-direction: column;
@@ -707,18 +717,22 @@ h3,
 }
 
 .dark .auth-panel {
-  background: rgba(18, 12, 40, 0.65);
-  border-color: rgba(180, 150, 255, 0.18);
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255,255,255,0.05);
+  background: rgba(14, 9, 32, 0.75);
+  border-color: rgba(180, 150, 255, 0.22);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 .auth-question {
   font-family: var(--font-display);
   font-size: 0.85rem;
   letter-spacing: 0.08em;
-  color: var(--text-muted);
+  color: #4a3d6a;
   text-align: center;
   margin-bottom: 4px;
+}
+
+.dark .auth-question {
+  color: #c0b0e8;
 }
 
 /* ── Neon input ── */

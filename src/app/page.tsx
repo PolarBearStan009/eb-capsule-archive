@@ -84,7 +84,7 @@ export default function OrgHomePage() {
           <span className="font-mono text-[9px] tracking-[0.5em] uppercase org-eyebrow">
             organization portal
           </span>
-          <h1 className="org-title">V∆CTOR</h1>
+          <h1 className="org-title">Erom Barta</h1>
           <p className="org-members">
             Yüvrāj &nbsp;·&nbsp; Mēden &nbsp;·&nbsp; Sarthak &nbsp;·&nbsp; Krish
           </p>
