@@ -1,120 +1,211 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import ScouterBar from "@/components/ScouterBar";
-import CapsulePod from "@/components/CapsulePod";
-import UploadDocumentModal from "@/components/UploadDocumentModal";
-import ThemeToggle from "@/components/ThemeToggle";
-import type { DocumentPod } from "@/lib/documentPods";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import LanternToggle from "@/components/LanternToggle";
+import { signIn, signUp, getUser } from "@/lib/auth";
 
-export default function HomePage() {
-  // goku: the search text -- he's the one out front doing the searching.
-  const [goku, setGoku] = useState("");
-  // vegeta: the genre filter -- picky about what counts as worthy.
-  const [vegeta, setVegeta] = useState("all");
+const PROJECTS = [
+  { name: "Capsule Archive", status: "live" as const, href: "/archive" },
+  { name: "Vector Synchronization", status: "soon" as const, note: "Fuck Yuvraj btw" },
+  { name: "W.I.P.R", status: "soon" as const },
+];
 
-  const [pods, setPods] = useState<DocumentPod[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isUploadOpen, setIsUploadOpen] = useState(false);
-
-  // isLoading starts true already, so this only needs to flip it off
-  // once data lands -- no synchronous setState before the fetch.
-  const loadPods = useCallback(async () => {
-    const response = await fetch("/api/documents");
-    const data = await response.json();
-    setPods(Array.isArray(data) ? data : []);
-    setIsLoading(false);
-  }, []);
+export default function OrgHomePage() {
+  const router = useRouter();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [answer, setAnswer] = useState("");
+  const [unlocked, setUnlocked] = useState(false);
+  const [wrongAnswer, setWrongAnswer] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [authMode, setAuthMode] = useState<"login" | "register">("login");
+  const [authError, setAuthError] = useState("");
+  const [authLoading, setAuthLoading] = useState(false);
 
   useEffect(() => {
-    // Simple client-side fetch-on-mount. This is a client component
-    // (search/filter/upload state live here), so there's no server
-    // component to fetch in instead.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    loadPods();
-  }, [loadPods]);
-
-  const genreOptions = useMemo(
-    () => Array.from(new Set(pods.map((pod) => pod.genre))),
-    [pods]
-  );
-
-  // gohan: the filtered results -- inherits the work of goku and vegeta
-  // above and quietly does the actual filtering.
-  const gohan = useMemo(() => {
-    return pods.filter((pod) => {
-      const matchesGenre = vegeta === "all" || pod.genre === vegeta;
-      const matchesQuery =
-        goku.trim().length === 0 ||
-        pod.title.toLowerCase().includes(goku.toLowerCase()) ||
-        pod.model.toLowerCase().includes(goku.toLowerCase()) ||
-        pod.system.toLowerCase().includes(goku.toLowerCase());
-      return matchesGenre && matchesQuery;
+    getUser().then((user) => {
+      if (user) router.replace("/archive");
     });
-  }, [pods, goku, vegeta]);
+  }, [router]);
+
+  function checkAnswer() {
+    if (answer.trim().toLowerCase() === "vector") {
+      setUnlocked(true);
+      setWrongAnswer(false);
+    } else {
+      setWrongAnswer(true);
+    }
+  }
+
+  async function handleAuth(e: React.FormEvent) {
+    e.preventDefault();
+    setAuthLoading(true);
+    setAuthError("");
+    const fn = authMode === "login" ? signIn : signUp;
+    const { error } = await fn(email, password);
+    setAuthLoading(false);
+    if (error) {
+      setAuthError(error.message);
+    } else {
+      router.push("/archive");
+    }
+  }
 
   return (
-    <main className="relative min-h-screen overflow-hidden text-[color:var(--text-body)]">
-      <div className="relative z-10 mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 sm:gap-10 sm:px-6 sm:py-16">
-        <div className="flex justify-end">
-          <ThemeToggle />
-        </div>
+    <main className="nebula-bg relative min-h-screen overflow-hidden flex flex-col">
+      {/* Nebula SVG filter */}
+      <svg className="fixed w-0 h-0 overflow-hidden" aria-hidden="true">
+        <defs>
+          <filter id="iridescent-nebula">
+            <feTurbulence result="turb" seed="11" numOctaves={4} baseFrequency="0.023" type="fractalNoise" />
+            <feColorMatrix values="80" type="hueRotate" />
+            <feGaussianBlur result="blurred" stdDeviation="7" />
+            <feComponentTransfer><feFuncA type="table" tableValues="0 1" /></feComponentTransfer>
+            <feBlend in="turb" in2="blurred" mode="screen" />
+          </filter>
+        </defs>
+      </svg>
 
-        <header className="flex flex-col items-center gap-3 text-center sm:gap-4">
-          <span className="scouter-readout text-[10px] tracking-[0.25em] text-[color:var(--text-accent-blue)] sm:text-xs sm:tracking-[0.4em]">
-            transmission from sector 0079
-          </span>
-          <h1 className="text-3xl tracking-tight text-transparent [background-clip:text] [background-image:linear-gradient(120deg,#a7d8ff,#ffc2e2_50%,#c9b8ff)] sm:text-5xl">
-            Capsule Archive
-          </h1>
-          <p className="max-w-xl text-sm text-[color:var(--text-body)] sm:text-base">
-            The org&apos;s document maker and archive. Read, host, edit, and
-            generate documents for every model and system you ship.
-          </p>
-          <button
-            onClick={() => setIsUploadOpen(true)}
-            className="glow-button mt-2 w-full max-w-xs rounded-full border border-[color:var(--panel-border)] bg-[color:var(--input-bg)] px-6 py-2.5 text-sm font-medium text-[color:var(--text-button)] sm:w-auto"
-          >
-            + Materialize new document
-          </button>
-        </header>
+      {/* Animated nebula layer */}
+      <div className="nebula-layer" aria-hidden="true" />
 
-        <ScouterBar
-          searchQuery={goku}
-          onSearchQueryChange={setGoku}
-          selectedGenre={vegeta}
-          onSelectedGenreChange={setVegeta}
-          genreOptions={genreOptions}
-          resultCount={gohan.length}
-        />
-
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
-          {gohan.map((pod) => (
-            <CapsulePod
-              key={pod.id}
-              pod={pod}
-              onDelete={(id) => setPods((prev) => prev.filter((p) => p.id !== id))}
-              onUpdated={loadPods}
-            />
-          ))}
-        </section>
-
-        {!isLoading && gohan.length === 0 && (
-          <p className="py-16 text-center text-sm text-[color:var(--text-muted)]">
-            No pods detected. Adjust the scouter and try again.
-          </p>
-        )}
+      {/* Lantern toggle */}
+      <div className="fixed top-6 right-8 z-50">
+        <LanternToggle />
       </div>
 
-      {isUploadOpen && (
-        <UploadDocumentModal
-          onClose={() => setIsUploadOpen(false)}
-          onUploaded={() => {
-            setIsUploadOpen(false);
-            loadPods();
-          }}
-        />
-      )}
+      {/* Main content */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 gap-14 py-24">
+
+        {/* Org name */}
+        <div className="flex flex-col items-center gap-4 text-center">
+          <span className="font-mono text-[9px] tracking-[0.5em] uppercase org-eyebrow">
+            organization portal
+          </span>
+          <h1 className="org-title">V∆CTOR</h1>
+          <p className="org-members">
+            Yüvrāj &nbsp;·&nbsp; Mēden &nbsp;·&nbsp; Sarthak &nbsp;·&nbsp; Krish
+          </p>
+        </div>
+
+        {/* Project launcher */}
+        <div className="relative flex flex-col items-center">
+          <button
+            className="project-dropdown-btn"
+            onClick={() => setDropdownOpen((o) => !o)}
+          >
+            <span>LAUNCH PROJECT</span>
+            <span
+              className="transition-transform duration-300 inline-block"
+              style={{ transform: dropdownOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+            >
+              ▾
+            </span>
+          </button>
+
+          {dropdownOpen && (
+            <div className="project-dropdown-panel">
+              {PROJECTS.map((p) => (
+                <button
+                  key={p.name}
+                  className={`project-item${p.status === "soon" ? " project-item--dim" : ""}`}
+                  disabled={p.status === "soon"}
+                  onClick={() => {
+                    if (p.href) router.push(p.href);
+                    setDropdownOpen(false);
+                  }}
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className={`project-dot${p.status === "live" ? " dot-live" : " dot-soon"}`} />
+                    <span className="project-name">{p.name}</span>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    {p.note && <span className="project-note">{p.note}</span>}
+                    <span className={`project-badge${p.status === "live" ? " badge-live" : " badge-soon"}`}>
+                      {p.status === "live" ? "LIVE" : "SOON"}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Auth section */}
+        <div className="auth-panel">
+          {!unlocked ? (
+            <div className="flex flex-col items-center gap-5 w-full">
+              <p className="auth-question">what is the name of our language?</p>
+              <div className="flex gap-3 items-center w-full">
+                <input
+                  className="neon-input flex-1"
+                  type="text"
+                  placeholder="your answer..."
+                  value={answer}
+                  onChange={(e) => setAnswer(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && checkAnswer()}
+                  autoComplete="off"
+                />
+                <button className="neon-confirm-btn" onClick={checkAnswer}>→</button>
+              </div>
+              {wrongAnswer && (
+                <a
+                  href="https://youtu.be/ZS5hZjAItYY"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="wrong-btn"
+                >
+                  click here to proceed
+                </a>
+              )}
+            </div>
+          ) : (
+            <form onSubmit={handleAuth} className="flex flex-col items-center gap-5 w-full">
+              <p className="auth-question">
+                {authMode === "login" ? "welcome back" : "create your portal"}
+              </p>
+              <input
+                className="neon-input w-full"
+                type="email"
+                placeholder="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="email"
+              />
+              <input
+                className="neon-input w-full"
+                type="password"
+                placeholder="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete={authMode === "login" ? "current-password" : "new-password"}
+              />
+              {authError && (
+                <p className="text-red-400 text-xs text-center">{authError}</p>
+              )}
+              <button className="cosmic-btn" type="submit" disabled={authLoading}>
+                <span className="cosmic-btn-inner">
+                  {authLoading ? "ENTERING..." : authMode === "login" ? "LOGIN" : "REGISTER"}
+                </span>
+              </button>
+              <button
+                type="button"
+                className="text-[10px] font-mono tracking-widest uppercase text-[color:var(--text-muted)] hover:text-[color:var(--text-body)] transition-colors"
+                onClick={() => {
+                  setAuthMode((m) => (m === "login" ? "register" : "login"));
+                  setAuthError("");
+                }}
+              >
+                {authMode === "login" ? "new here? register instead" : "already in? login"}
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
     </main>
   );
 }

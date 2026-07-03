@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Capsule Archive",
-  description: "The org's document maker and archive.",
+  title: "V∆CTOR",
+  description: "Organization portal.",
 };
 
 export const viewport: Viewport = {
