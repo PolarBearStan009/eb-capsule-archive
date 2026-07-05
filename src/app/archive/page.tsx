@@ -87,15 +87,12 @@ export default function ArchivePage() {
         </div>
 
         <header className="flex flex-col items-center gap-3 text-center sm:gap-4">
-          <span className="scouter-readout text-[10px] tracking-[0.25em] text-[color:var(--text-accent-blue)] sm:text-xs sm:tracking-[0.4em]">
-            transmission from sector 0079
-          </span>
           <h1 className="text-3xl tracking-tight text-transparent [background-clip:text] [background-image:linear-gradient(120deg,#a7d8ff,#ffc2e2_50%,#c9b8ff)] sm:text-5xl">
             Capsule Archive
           </h1>
           <p className="max-w-xl text-sm text-[color:var(--text-body)] sm:text-base">
-            The org&apos;s document maker and archive. Read, host, edit, and
-            generate documents for every model and system you ship.
+            All knowledge is preserved. All knowledge is shared.
+            Welcome to the record.
           </p>
           <button
             onClick={() => setIsUploadOpen(true)}
