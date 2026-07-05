@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LanternToggle from "@/components/LanternToggle";
-import { signIn, signUp, getUser } from "@/lib/auth";
+import { signIn, signUp, getUser, resendVerification } from "@/lib/auth";
 
 const PROJECTS = [
   { name: "Capsule Archive", status: "live" as const, href: "/archive" },
@@ -22,6 +22,8 @@ export default function OrgHomePage() {
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
   const [authError, setAuthError] = useState("");
   const [authLoading, setAuthLoading] = useState(false);
+  const [resendSent, setResendSent] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -43,6 +45,7 @@ export default function OrgHomePage() {
     e.preventDefault();
     setAuthLoading(true);
     setAuthError("");
+    setResendSent(false);
     const fn = authMode === "login" ? signIn : signUp;
     const { error } = await fn(email, password);
     setAuthLoading(false);
@@ -51,6 +54,14 @@ export default function OrgHomePage() {
     } else {
       router.push("/archive");
     }
+  }
+
+  async function handleResend() {
+    if (!email) return;
+    setResendLoading(true);
+    await resendVerification(email);
+    setResendLoading(false);
+    setResendSent(true);
   }
 
   return (
@@ -192,7 +203,25 @@ export default function OrgHomePage() {
                 autoComplete={authMode === "login" ? "current-password" : "new-password"}
               />
               {authError && (
-                <p className="text-red-400 text-xs text-center">{authError}</p>
+                <div className="flex flex-col items-center gap-2 w-full">
+                  <p className="text-red-400 text-xs text-center">{authError}</p>
+                  {authError.toLowerCase().includes("not confirmed") && (
+                    resendSent ? (
+                      <p className="text-[10px] font-mono tracking-widest text-[color:var(--text-muted)]">
+                        check your inbox ✓
+                      </p>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleResend}
+                        disabled={resendLoading}
+                        className="text-[10px] font-mono tracking-widest uppercase underline underline-offset-2 text-[color:var(--text-muted)] hover:text-[color:var(--text-body)] transition-colors disabled:opacity-50"
+                      >
+                        {resendLoading ? "sending..." : "resend verification email"}
+                      </button>
+                    )
+                  )}
+                </div>
               )}
               <button className="cosmic-btn" type="submit" disabled={authLoading}>
                 <span className="cosmic-btn-inner">

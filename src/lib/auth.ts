@@ -12,6 +12,10 @@ export async function signOut() {
   await getSupabase().auth.signOut();
 }
 
+export async function resendVerification(email: string) {
+  return getSupabase().auth.resend({ type: "signup", email });
+}
+
 export async function getUser() {
   const { data: { user } } = await getSupabase().auth.getUser();
   return user;
